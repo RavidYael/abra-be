@@ -21,6 +21,9 @@ namespace abra_be.Services
 
         public async Task CreateAsync(Pet pet)
         {
+            pet.CreatedAt = DateTime.Now;
+            pet.Id = null;
+            // Im not sure if that how its implemented
             await _petsCollection.InsertOneAsync(pet);
         }
 
