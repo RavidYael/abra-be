@@ -1,6 +1,8 @@
 ﻿using abra_be.Models;
 using abra_be.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using static abra_be.Models.Pet;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -30,6 +32,13 @@ namespace abra_be.Controllers
         public void Post([FromBody] Pet value)
         {
             _petsService.CreateAsync(value);
+        }
+
+        [Route("types")]
+        [HttpGet]
+        public IEnumerable<string> GetTypes()
+        {
+            return Enum.GetValues(typeof(PetType)).Cast<PetType>().Select(v => v.ToString());
         }
 
     }
