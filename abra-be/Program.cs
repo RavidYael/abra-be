@@ -1,6 +1,21 @@
+using abra_be.Models;
+using abra_be.Services;
+using MongoDB.Driver;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<MongoDBSettings>(
+    builder.Configuration.GetSection("MongoDBSettings"));
+
+builder.Services.AddSingleton<IMongoClient, MongoClient>(services =>
+{
+    var settings = builder.Configuration.GetSection("MongoDBSettings").Get<MongoDBSettings>();
+    return new MongoClient(settings.ConnectionString);
+});
+
+builder.Services.AddSingleton<MongoDBService>();
+
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -23,3 +38,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
